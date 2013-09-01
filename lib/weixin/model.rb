@@ -23,11 +23,18 @@ module Weixin
             @source.MsgId.to_i
         end
 
+
         def Message.factory(xml)
-            p xml
+            p 'xml: ' + xml
             hash = MultiXml.parse(xml)['xml']
-            p hash.inspect
-            case hash['MsgType']['__content__']
+            p "first hash: " + hash.inspect
+            if hash['MsgType']['__content__']
+              msg_type = hash['MsgType']['__content__']
+            else
+              msg_type = hash['MsgType']
+            end
+
+            case msg_type
             when 'text'
                 TextMessage.new(hash)
             when 'image'
@@ -43,7 +50,7 @@ module Weixin
             when 'video'
                 VideoMessage.new(hash)
             else
-                p hash.inspect
+                p "second hash: " + hash.inspect
                 raise ArgumentError, 'Unknown Message'
             end
         end
