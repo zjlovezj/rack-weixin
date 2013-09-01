@@ -41,6 +41,7 @@ module Weixin
             when 'video'
                 VideoMessage.new(hash)
             else
+                p hash.inspect
                 raise ArgumentError, 'Unknown Message'
             end
         end
