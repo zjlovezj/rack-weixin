@@ -24,7 +24,9 @@ module Weixin
         end
 
         def Message.factory(xml)
+            p xml
             hash = MultiXml.parse(xml)['xml']
+            p hash.inspect
             case hash['MsgType']['__content__']
             when 'text'
                 TextMessage.new(hash)
