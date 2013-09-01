@@ -53,6 +53,7 @@ module Weixin
                 sign = Digest::SHA1.hexdigest( param_array.sort.join )
                 sign == @req.params['signature'] ? true : false
             rescue
+                p 'request is not valid'
                 false
             end
         end
