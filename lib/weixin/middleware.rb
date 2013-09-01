@@ -23,7 +23,7 @@ module Weixin
             if @path == env['PATH_INFO'].to_s && ['GET', 'POST'].include?(env['REQUEST_METHOD'])
 
                 @req = Rack::Request.new(env)
-                p env[POST_BODY].read
+                #p env[POST_BODY].read
                 return invalid_request! unless request_is_valid?
                 return [
                     200, 
