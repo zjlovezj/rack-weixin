@@ -35,8 +35,12 @@ module Weixin
     end
 
     def add(menu)
+      p "menu: hash is #{hash.inspect}"
+      p "menu: json is #{MultiJson.dump(menu)}"
       request = Nestful::Connection.new(gw_url('create')).post(gw_path('create'), MultiJson.dump(menu)) rescue nil
       unless request.nil?
+        p "menu: request is not nil"
+        p "menu: errocode is #{MultiJson.load(request.body)['errcode']}"
         errcode = MultiJson.load(request.body)['errcode']
         return true if errcode == 0
       end
@@ -45,6 +49,7 @@ module Weixin
 
     def authenticate
       url = "#{@endpoint}/token"
+      p "menu: going to authenticate"
       request = Nestful.get url, { grant_type: 'client_credential', appid: @api, secret: @key } rescue nil
       unless request.nil?
         auth = MultiJson.load(request.body)
@@ -52,6 +57,7 @@ module Weixin
           @access_token = auth['access_token']
           @expired_at   = Time.now + auth['expires_in'].to_i
         end
+        p "menu: access_token is #{@access_token}"
         @access_token
       end
     end
